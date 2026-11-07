@@ -21,3 +21,5 @@ Start with one mailbox, one currency, fixed categories, and synthetic data. Staf
 Repository scaffold. The workflow and integrations are planned.
 
 [Original portfolio brief](https://github.com/Asaduddin18/ai-freelance-playbook/tree/main/projects/02-enquiry-quotation)
+
+[Phase-wise portfolio plan](artifacts/phase-wise-plan.md)
