@@ -1,0 +1,6 @@
+.env
+.env.*
+!.env.example
+credentials.json
+token.json
+.DS_Store
