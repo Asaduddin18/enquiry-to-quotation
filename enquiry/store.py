@@ -1,0 +1,33 @@
+import os
+
+import psycopg
+from psycopg.rows import dict_row
+
+
+def connect():
+    return psycopg.connect(os.environ['DATABASE_URL'], row_factory=dict_row)
+
+
+def initialize():
+    with connect() as db:
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS enquiry_intake (
+                id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                message_key text UNIQUE NOT NULL,
+                digest text NOT NULL,
+                raw_email bytea NOT NULL,
+                source jsonb NOT NULL,
+                status text NOT NULL DEFAULT 'received',
+                candidate jsonb,
+                issues jsonb NOT NULL DEFAULT '[]'
+            )
+        """)
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS enquiry_extraction_attempt (
+                id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                enquiry_id bigint NOT NULL REFERENCES enquiry_intake(id),
+                attempted_at timestamptz NOT NULL DEFAULT now(),
+                status text NOT NULL,
+                issues jsonb NOT NULL
+            )
+        """)

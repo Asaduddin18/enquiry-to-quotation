@@ -23,3 +23,21 @@ Repository scaffold. The workflow and integrations are planned.
 [Original portfolio brief](https://github.com/Asaduddin18/ai-freelance-playbook/tree/main/projects/02-enquiry-quotation)
 
 [Phase-wise portfolio plan](artifacts/phase-wise-plan.md)
+
+## Run the Phase 3.1 review app
+
+Use Python 3.12 and a local PostgreSQL database. Install dependencies into a virtual environment, then set `DATABASE_URL` and `DEEPSEEK_API_KEY` locally. `DEEPSEEK_MODEL` is optional.
+
+```sh
+python3.12 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+set -a
+source .env
+set +a
+.venv/bin/uvicorn enquiry.app:app
+```
+
+Open http://127.0.0.1:8000 and upload the shutdown case's `01-customer-enquiry.eml`. Use `.venv/bin/python -m pytest` for the tests. Set `DATABASE_URL` to a disposable database to include the PostgreSQL test.
+
+- [Phase 3 implementation plan](artifacts/phase-3-implementation-plan.md)
+- [Phase 3.1 implementation and learning report](artifacts/phase-3-1-implementation-and-learning.md)
