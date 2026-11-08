@@ -42,3 +42,14 @@ def initialize():
                 PRIMARY KEY (enquiry_id, version)
             )
         """)
+
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS supplier_approval (
+                id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                enquiry_id bigint NOT NULL REFERENCES enquiry_intake(id),
+                line_id text NOT NULL,
+                requirement_key text NOT NULL,
+                selection jsonb NOT NULL,
+                recorded_at timestamptz NOT NULL DEFAULT now()
+            )
+        """)
