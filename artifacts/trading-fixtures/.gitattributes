@@ -1,0 +1,3 @@
+*.eml whitespace=cr-at-eol -text
+*.pdf binary
+*.xlsx binary

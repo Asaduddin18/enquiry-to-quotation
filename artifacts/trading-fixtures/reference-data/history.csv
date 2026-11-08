@@ -1,0 +1,7 @@
+id,type,date,supplier,description,quantity,unit,unit_price_omr,price_basis
+P01,confirmed_purchase,2026-07-01,A,A2-70 stainless hex bolt 10 mm x 50 full thread,500,EA,0.300,delivered cost
+P02,confirmed_purchase,2026-08-11,B,SS hex hd M10x50 A2-70 fully threaded,500,EA,0.320,delivered cost
+P03,confirmed_purchase,2026-09-15,A,Stainless fully threaded hex bolt M10 x 50 A2-70,500,EA,0.330,delivered cost
+P04,confirmed_purchase,2026-10-01,A,SS hex bolt M10x55 A2-70 full thread,500,EA,0.210,delivered cost
+O01,supplier_offer,2026-10-05,B,SS hex bolt M10x50 A2-70 full thread,500,EA,0.275,delivered cost
+Q01,issued_customer_quote,2026-10-06,,SS hex bolt M10x50 A2-70 full thread,500,EA,0.505,selling price

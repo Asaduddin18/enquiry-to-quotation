@@ -16,11 +16,16 @@
 
 ## Phase 2 — Prepare synthetic business documents
 
+[Reusable trading fixtures](trading-fixtures/)
+
 - Write customer emails and create typed requirement PDFs with believable item descriptions, specifications, quantities, units, and dates.
-- Create fictional supplier profiles and free-form reply emails. Include delivered OMR prices, box and piece pricing, minimum quantities, different validity dates, and competing lead times.
+- Create fictional supplier profiles and supplier reply emails with completed Excel templates. Include delivered OMR prices, box and piece pricing, minimum quantities, different validity dates, and competing lead times.
 - Create past supplier offers, customer quotations, and confirmed purchase records. Include alternate descriptions of the same item, near-identical descriptions with different specs, and older prices that should carry less weight.
 - Include cases where an offer covers only some items, a supplier revises a price, a substitute brand is proposed, or a pack size is missing.
 - Write an answer key for each case covering valid matches, comparable costs, exceptions, recommended suppliers, and expected quote coverage. Set aside fresh cases for the final evaluation.
+
+- Replay standalone email events in chronological order. Each message contains only the information the sender had at that point. Use local files until the end-to-end workflow is ready for Gmail integration.
+- Vary document layouts, wording, and commercial terms. Include realistic failures such as missing attachments, incorrect workbook references, and ambiguous pack sizes.
 
 **Done when:** Each scenario has realistic source documents and an agreed expected outcome, and the evaluation set is separate from the practice cases.
 
