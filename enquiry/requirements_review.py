@@ -74,7 +74,7 @@ def decide(enquiry_id: int, line_id: str, version: int = Form(), decision: str =
             raise HTTPException(409, 'This review is out of date. Reopen the enquiry.')
         if (decision == 'awaiting clarification' or any(line.get(k) != v for k, v in values.items())) and not reason.strip():
             raise HTTPException(422, 'Give a reason for the correction or clarification.')
-        lines[lines.index(line)] = updated
+        lines[lines.index(line)] = {**updated, 'requirement_version': latest + 1}
         save(db, enquiry_id, latest, lines)
     return redirect(enquiry_id)
 
@@ -132,7 +132,7 @@ def apply_revision(revision_id: int, parent_id: int = Form(), version: int = For
                 raise HTTPException(422, 'The revised line reference is missing or ambiguous.')
             previous = matches[0]
             updates[previous['id']] = {**change, 'id': previous['id'], 'status': 'needs review',
-                                       'source_id': revision_id}
+                                       'source_id': revision_id, 'requirement_version': latest + 1}
         save(db, parent_id, latest, [updates.get(line['id'], line) for line in lines], revision_id)
     return redirect(parent_id)
 
@@ -185,6 +185,7 @@ def review_controls(row):
         forms.append(f'''<form method="post" action="/enquiries/{enquiry_id}/lines/{line['id']}/review">
         <h3>Line {escape(str(line['line_number']))} · {escape(line['status'])}</h3>
         <a href="/enquiries/{line['source_id']}">Source email and PDF</a><br>
+        <a href="/enquiries/{enquiry_id}/lines/{line['id']}/suppliers">Supplier selection and history</a><br>
         <input type="hidden" name="version" value="{version}">
         {inputs}<label>Reason <input name="reason" value="{escape(line.get('reason', ''), quote=True)}"></label>
         <button name="decision" value="confirmed">Confirm line</button>
