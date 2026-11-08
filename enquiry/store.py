@@ -53,3 +53,12 @@ def initialize():
                 recorded_at timestamptz NOT NULL DEFAULT now()
             )
         """)
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS rfq_package (
+                approval_id bigint PRIMARY KEY REFERENCES supplier_approval(id),
+                reference text UNIQUE NOT NULL,
+                draft bytea NOT NULL,
+                workbook bytea NOT NULL,
+                approved_at timestamptz
+            )
+        """)

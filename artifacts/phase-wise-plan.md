@@ -29,7 +29,9 @@
 
 **Done when:** Each scenario has realistic source documents and an agreed expected outcome, and the evaluation set is separate from the practice cases.
 
-## Phase 3 — Take the enquiry through supplier outreach
+## Phase 3 — Take the enquiry through supplier outreach (implemented)
+
+[RFQ package walkthrough and verification](phase-3-4-implementation-and-learning.md)
 
 - Check the customer's requested items, quantities, specs, and dates against the original email and attachment. Resolve missing or conflicting details before asking for prices.
 - Identify suitable suppliers for each line using their product coverage and relevant sourcing history.
