@@ -2,12 +2,14 @@
 
 **Business outcome.** A buyer at a trading company can take a customer enquiry, compare supplier offers on a common basis, and approve a customer quotation with a clear reason for each supplier choice and selling price.
 
-## Phase 1 — Define the trading scenario
+## Phase 1 — Define the trading scenario (complete)
+
+[Approved Oman-only scenario and decision rules](phase-1-trading-scenario.md)
 
 - Use one fictional Oman-based distributor, one product family (industrial fasteners), a small set of suppliers, and one named buyer and approver.
 - Agree what a customer request must specify, including quantity, unit, critical specifications, quote deadline, and required delivery date when given.
 - Agree what makes an offer usable. Set policies for brand and origin, acceptable substitutions, minimum purchase quantities, lead time, and offer expiry.
-- Agree how the buyer compares AED and OMR offers, when a landed-cost uplift applies, and when pricing below the margin floor needs approval.
+- Agree how the buyer compares delivered OMR offers and when pricing below the margin floor needs approval.
 - Decide when the buyer can quote part of an enquiry and how to communicate what is still pending.
 
 **Done when:** The buyer and approver can walk through one enquiry on paper and agree what they would quote, what they would hold, and why.
@@ -15,7 +17,7 @@
 ## Phase 2 — Prepare synthetic business documents
 
 - Write customer emails and create typed requirement PDFs with believable item descriptions, specifications, quantities, units, and dates.
-- Create fictional supplier profiles and free-form reply emails. Include AED and OMR, box and piece pricing, minimum quantities, different validity dates, and competing lead times.
+- Create fictional supplier profiles and free-form reply emails. Include delivered OMR prices, box and piece pricing, minimum quantities, different validity dates, and competing lead times.
 - Create past supplier offers, customer quotations, and confirmed purchase records. Include alternate descriptions of the same item, near-identical descriptions with different specs, and older prices that should carry less weight.
 - Include cases where an offer covers only some items, a supplier revises a price, a substitute brand is proposed, or a pack size is missing.
 - Write an answer key for each case covering valid matches, comparable costs, exceptions, recommended suppliers, and expected quote coverage. Set aside fresh cases for the final evaluation.
@@ -34,7 +36,7 @@
 ## Phase 4 — Compare offers and recommend suppliers
 
 - Match supplier descriptions to requested items even when the wording differs. Send uncertain matches and critical spec conflicts to the buyer for review.
-- Compare each offer in OMR per requested unit. Show the original price, the currency and pack conversion, and any applicable landed-cost uplift.
+- Compare each offer in OMR per requested unit. Show the original delivered price and the pack conversion.
 - Show minimum order quantity, actual purchase spend, lead time, validity, brand, and origin alongside price. Flag missing or expired terms that prevent a decision.
 - Compare prices against relevant history on the same cost basis. Flag unusual prices and substitute brands with the evidence the buyer needs to judge them.
 - Recommend a supplier per line and explain why. Make it clear when an apparently cheaper offer misses a requirement or costs more because of minimum quantities. Mark lines with no acceptable offer as blocked.
