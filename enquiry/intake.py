@@ -16,6 +16,8 @@ def parse_email(raw):
         'sender': str(message.get('From', '')),
         'subject': str(message.get('Subject', '')),
         'date': str(message.get('Date', '')),
+        'reply_headers': [str(value) for name in ('In-Reply-To', 'References')
+                          for value in message.get_all(name, [])],
         'body': body.get_content() if body else '',
     }
     return str(message.get('Message-ID') or digest).strip(), digest, source

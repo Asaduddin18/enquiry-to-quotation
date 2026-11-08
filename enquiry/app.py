@@ -11,6 +11,7 @@ from pypdf.errors import PdfReadError
 from .extraction import deepseek, review
 from .intake import parse_email, read_pdf
 from .store import connect, initialize
+from .requirements_review import review_router, review_controls
 
 MAX_EMAIL = 10 * 1024 * 1024
 
@@ -23,6 +24,7 @@ async def lifespan(app):
 
 app = FastAPI(lifespan=lifespan)
 app.state.extract = deepseek
+app.include_router(review_router)
 
 
 def load(enquiry_id):
@@ -142,4 +144,4 @@ def enquiry(enquiry_id: int):
     {retry_form}<main><section><h2>Source email</h2><p>{escape(source['sender'])} · {escape(source['date'])}</p>
     <pre>{escape(source['body'])}</pre><a href="{enquiry_id}/pdf">Open requirement PDF</a></section>
     <section><h2>Review issues</h2><ul>{issues}</ul><h2>Candidate requirements</h2>
-    {fields(candidate)}{lines}</section></main>'''
+    {fields(candidate)}{lines}</section></main>{review_controls(row)}'''

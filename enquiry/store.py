@@ -31,3 +31,14 @@ def initialize():
                 issues jsonb NOT NULL
             )
         """)
+
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS enquiry_review (
+                enquiry_id bigint NOT NULL REFERENCES enquiry_intake(id),
+                version integer NOT NULL,
+                snapshot jsonb NOT NULL,
+                revision_id bigint UNIQUE REFERENCES enquiry_intake(id),
+                recorded_at timestamptz NOT NULL DEFAULT now(),
+                PRIMARY KEY (enquiry_id, version)
+            )
+        """)
