@@ -116,7 +116,8 @@ def supplier_page(enquiry_id: int, line_id: str, family: str | None = None, grad
         for key, row in directory.items()
     )
     token = approval_token(line, directory, coverage, approvals[0]['id'] if approvals else None)
-    return header + f'''
+    rfq = f'<a href="{url.removesuffix("/suppliers")}/rfq">Prepare or review RFQ package</a>' if ready else ''
+    return header + f'''{rfq}
     <form action="{url}">
       <label>Family <select name="family">{options(FAMILIES, family)}</select></label>
       <label>Grade <select name="grade">{options(GRADES, grade)}</select></label>

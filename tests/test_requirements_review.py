@@ -1,6 +1,10 @@
 import os
 import re
 from pathlib import Path
+from email import policy
+from email.parser import BytesParser
+from io import BytesIO
+from zipfile import ZipFile
 from uuid import uuid4
 
 import pytest
@@ -23,6 +27,7 @@ def test_confirm_and_apply_line_revision(monkeypatch):
         numbers = [10] if is_revision else [10, 20, 30]
         return Extraction.model_validate({
             'customer_reference': 'MR-26-184',
+            'delivery_deadline': '2026-11-12T14:00:00+04:00',
             'lines': [
                 {'line_number': str(number), 'description': 'Hex head bolt',
                  'specification': 'M10 x 55 A2-70' if is_revision else ('Class 10.9' if number == 20 else 'M10 x 50 A2-70'),
@@ -73,6 +78,26 @@ def test_confirm_and_apply_line_revision(monkeypatch):
         second = approval(line20, '10.9', ['A', 'C'])
         assert client.post(line20, data=second).status_code == 422
         assert client.post(line20, data=second | {'reason': 'Can source on request'}).status_code == 303
+        rfq10 = line10.replace('/suppliers', '/rfq')
+        rfq20 = line20.replace('/suppliers', '/rfq')
+        assert client.post(line30.replace('/suppliers', '/rfq')).status_code == 409
+        assert client.post(rfq10).status_code == 303
+        assert client.post(rfq10).status_code == 303
+        assert client.get(rfq10 + '/email').status_code == 409
+        workbook = client.get(rfq10 + '/workbook').content
+        with ZipFile(BytesIO(workbook)) as archive:
+            sheet = archive.read('xl/worksheets/sheet1.xml')
+        reference = re.search(rb'RFQ-[A-F0-9]{16}', sheet)[0].decode()
+        assert sheet.count(reference.encode()) == 2
+        assert b'501' in sheet and b'MR-26-184' not in sheet
+        assert client.post(rfq10 + '/approve', data={'reference': reference, 'reviewed': 'true'}).status_code == 303
+        assert client.post(rfq10 + '/approve', data={'reference': reference, 'reviewed': 'true'}).status_code == 303
+        email = BytesParser(policy=policy.default).parsebytes(client.get(rfq10 + '/email').content)
+        assert len(email['Bcc'].addresses) == 2 and reference in email['Subject']
+        assert reference in email.get_body().get_content()
+        assert 'MR-26-184' not in email.as_string()
+        assert next(email.iter_attachments()).get_payload(decode=True) == workbook
+        assert client.post(rfq20).status_code == 303
         revision = upload('16-customer-revision.eml')
         assert upload('16-customer-revision.eml') == revision
         assert f'value="{parent_id}" required' in client.get(revision).text
@@ -84,6 +109,8 @@ def test_confirm_and_apply_line_revision(monkeypatch):
         assert decide(1, 3).status_code == 409
         assert client.post(line10, data=first).status_code == 409
         assert 'Recipients approved' in client.get(line20).text
+        assert client.get(rfq10 + '/email').status_code == 409
+        assert client.get(rfq20 + '/workbook').status_code == 200
         assert decide(1, 4, specification='M10 x 55 A2-70').status_code == 303
         assert 'Recipient approval required' in client.get(line10).text
         assert client.post(line10, data=first).status_code == 409
