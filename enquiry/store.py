@@ -86,3 +86,29 @@ def initialize():
                 recorded_at timestamptz NOT NULL DEFAULT now()
             )
         """)
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS customer_quote (
+                enquiry_id bigint REFERENCES enquiry_intake(id),
+                revision integer NOT NULL,
+                snapshot jsonb NOT NULL,
+                pdf bytea NOT NULL,
+                email bytea NOT NULL,
+                exception_reason text,
+                approved_at timestamptz,
+                released_at timestamptz,
+                issued_at timestamptz,
+                sent_reference text,
+                PRIMARY KEY (enquiry_id, revision)
+            )
+        """)
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS confirmed_purchase (
+                enquiry_id bigint NOT NULL,
+                revision integer NOT NULL,
+                line_id text NOT NULL,
+                purchase_reference text NOT NULL,
+                details jsonb NOT NULL,
+                PRIMARY KEY (enquiry_id, revision, line_id, purchase_reference),
+                FOREIGN KEY (enquiry_id, revision) REFERENCES customer_quote(enquiry_id, revision)
+            )
+        """)

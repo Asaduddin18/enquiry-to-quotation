@@ -14,6 +14,7 @@ from .store import connect, initialize
 from .suppliers import supplier_router
 from .rfq import router as rfq_router
 from .offers import router as offers_router
+from .quotes import router as quote_router
 from .requirements_review import review_router, review_controls
 
 MAX_EMAIL = 10 * 1024 * 1024
@@ -31,6 +32,7 @@ app.include_router(review_router)
 app.include_router(supplier_router)
 app.include_router(rfq_router)
 app.include_router(offers_router)
+app.include_router(quote_router)
 
 
 def load(enquiry_id):
@@ -150,4 +152,4 @@ def enquiry(enquiry_id: int):
     {retry_form}<main><section><h2>Source email</h2><p>{escape(source['sender'])} · {escape(source['date'])}</p>
     <pre>{escape(source['body'])}</pre><a href="{enquiry_id}/pdf">Open requirement PDF</a></section>
     <section><h2>Review issues</h2><ul>{issues}</ul><h2>Candidate requirements</h2>
-    {fields(candidate)}{lines}</section></main>{review_controls(row)}'''
+    {fields(candidate)}{lines}</section></main>{review_controls(row)}<p><a href="/enquiries/{enquiry_id}/quotes">Customer quotation workspace</a></p>'''
