@@ -62,3 +62,27 @@ def initialize():
                 approved_at timestamptz
             )
         """)
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS supplier_reply (
+                id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                message_key text UNIQUE NOT NULL,
+                digest text NOT NULL,
+                raw_email bytea NOT NULL,
+                received_at timestamptz NOT NULL,
+                reference text REFERENCES rfq_package(reference),
+                supplier_id text,
+                terms jsonb,
+                issue text,
+                review_action text,
+                review_reason text
+            )
+        """)
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS sourcing_selection (
+                id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                reference text NOT NULL REFERENCES rfq_package(reference),
+                reply_id bigint NOT NULL REFERENCES supplier_reply(id),
+                reason text NOT NULL,
+                recorded_at timestamptz NOT NULL DEFAULT now()
+            )
+        """)

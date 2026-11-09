@@ -4,6 +4,10 @@ from pathlib import Path
 from email import policy
 from email.parser import BytesParser
 from io import BytesIO
+from datetime import datetime
+
+from openpyxl import load_workbook
+import enquiry.offers as sourcing
 from zipfile import ZipFile
 from uuid import uuid4
 
@@ -97,6 +101,35 @@ def test_confirm_and_apply_line_revision(monkeypatch):
         assert reference in email.get_body().get_content()
         assert 'MR-26-184' not in email.as_string()
         assert next(email.iter_attachments()).get_payload(decode=True) == workbook
+        class FixtureClock(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return cls(2026, 11, 9, 10, tzinfo=sourcing.GST).astimezone(tz)
+
+        monkeypatch.setattr(sourcing, 'datetime', FixtureClock)
+        supplier_email = BytesParser(policy=policy.default).parsebytes(
+            next(FIXTURES.glob('05-*.eml')).read_bytes()
+        )
+        attachment = next(supplier_email.iter_attachments())
+        returned = load_workbook(BytesIO(attachment.get_payload(decode=True)))
+        returned.active['B3'] = returned.active['B4'] = reference
+        filled = BytesIO()
+        returned.save(filled)
+        attachment.set_payload(filled.getvalue())
+        from email.encoders import encode_base64
+        del attachment['Content-Transfer-Encoding']
+        encode_base64(attachment)
+        supplier_email.replace_header('Subject', f'Re: {reference}')
+        reply = supplier_email.as_bytes()
+        for _ in range(2):
+            assert client.post('/supplier-replies', files={'email': ('reply.eml', reply)}).status_code == 303
+        offers = line10.replace('/suppliers', '/offers')
+        page = client.get(offers).text
+        assert 'OMR 210.420 total' in page
+        token = re.search(r'name="token" value="([^"]+)"', page)[1]
+        reply_id = re.search(r'name="reply_id" value="(\d+)"', page)[1]
+        assert client.post(offers, data={'reply_id': reply_id, 'token': token}).status_code == 303
+        assert client.get(offers + '/handoff').json()['cost']['total'] == '210.42'
         assert client.post(rfq20).status_code == 303
         revision = upload('16-customer-revision.eml')
         assert upload('16-customer-revision.eml') == revision
@@ -110,6 +143,7 @@ def test_confirm_and_apply_line_revision(monkeypatch):
         assert client.post(line10, data=first).status_code == 409
         assert 'Recipients approved' in client.get(line20).text
         assert client.get(rfq10 + '/email').status_code == 409
+        assert client.get(offers + '/handoff').status_code == 409
         assert client.get(rfq20 + '/workbook').status_code == 200
         assert decide(1, 4, specification='M10 x 55 A2-70').status_code == 303
         assert 'Recipient approval required' in client.get(line10).text

@@ -93,7 +93,7 @@ def preview(enquiry_id: int, line_id: str):
     summary = escape(f"Subject: {message['Subject']}\nBCC: {message['Bcc']}\n\n"
                      + message.get_body().get_content())
     if package['approved_at']:
-        action = f'<p>Approved for manual sending.</p><a href="{url}/email">Download EML</a>'
+        action = f'''<p>Approved for manual sending.</p><a href="{url.removesuffix('/rfq')}/offers">Compare supplier offers</a> <a href="{url}/email">Download EML</a>'''
     else:
         action = f'''<form method="post" action="{url}/approve">
         <input type="hidden" name="reference" value="{package['reference']}">
