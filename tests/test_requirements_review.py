@@ -8,6 +8,8 @@ from datetime import datetime
 
 from openpyxl import load_workbook
 import enquiry.offers as sourcing
+import enquiry.quotes as quoting
+from pypdf import PdfReader
 from zipfile import ZipFile
 from uuid import uuid4
 
@@ -107,6 +109,7 @@ def test_confirm_and_apply_line_revision(monkeypatch):
                 return cls(2026, 11, 9, 10, tzinfo=sourcing.GST).astimezone(tz)
 
         monkeypatch.setattr(sourcing, 'datetime', FixtureClock)
+        monkeypatch.setattr(quoting, 'datetime', FixtureClock)
         supplier_email = BytesParser(policy=policy.default).parsebytes(
             next(FIXTURES.glob('05-*.eml')).read_bytes()
         )
@@ -130,6 +133,34 @@ def test_confirm_and_apply_line_revision(monkeypatch):
         reply_id = re.search(r'name="reply_id" value="(\d+)"', page)[1]
         assert client.post(offers, data={'reply_id': reply_id, 'token': token}).status_code == 303
         assert client.get(offers + '/handoff').json()['cost']['total'] == '210.42'
+        quotes = parent + '/quotes'
+        quote_token = re.search(r'name="token" value="([^"]+)"', client.get(quotes).text)[1]
+        quote_form = {'token': quote_token, 'lines': f'{parent_id}-1',
+                      f'price_{parent_id}-1': '0.480', 'price_reason': 'Competitive bid'}
+        assert client.post(quotes, data=quote_form).status_code == 422
+        quote_form['permission'] = 'Customer permits line 10 to be quoted separately'
+        quote = client.post(quotes, data=quote_form).headers['location']
+        assert client.post(quotes, data=quote_form).headers['location'] == quote
+        assert client.get(quote + '/email').status_code == 409
+        assert client.post(quote + '/approve', data={'reviewed': 'true'}).status_code == 422
+        approval = {'reviewed': 'true', 'manager_exception': 'true', 'reason': 'Approved competitive bid'}
+        assert client.post(quote + '/approve', data=approval).status_code == 303
+        assert client.post(quote + '/issue', data={'sent': 'true'}).status_code == 422
+        pdf = client.get(quote + '/pdf').content
+        text = PdfReader(BytesIO(pdf)).pages[0].extract_text()
+        assert '240.480' in text and 'Pending' in text and '210.42' not in text
+        assert reference not in text
+        customer_email = BytesParser(policy=policy.default).parsebytes(client.get(quote + '/email').content)
+        assert next(customer_email.iter_attachments()).get_payload(decode=True) == pdf
+        assert client.post(quote + '/issue', data={'sent': 'true'}).status_code == 303
+        assert client.post(quote + '/issue', data={'sent': 'true'}).status_code == 303
+        purchase = dict(line_id=f'{parent_id}-1', reference='PO-42', cost='211', pieces='501',
+                        purchased_on='2026-11-09')
+        assert client.post(quote + '/purchase', data=purchase).status_code == 303
+        assert client.post(quote + '/purchase', data=purchase).status_code == 303
+        assert client.post(quote + '/purchase', data=purchase | {'cost': '212'}).status_code == 409
+        draft = client.post(quotes, data=quote_form).headers['location']
+        assert client.post(draft + '/approve', data=approval).status_code == 303
         assert client.post(rfq20).status_code == 303
         revision = upload('16-customer-revision.eml')
         assert upload('16-customer-revision.eml') == revision
@@ -144,6 +175,8 @@ def test_confirm_and_apply_line_revision(monkeypatch):
         assert 'Recipients approved' in client.get(line20).text
         assert client.get(rfq10 + '/email').status_code == 409
         assert client.get(offers + '/handoff').status_code == 409
+        assert client.get(draft + '/email').status_code == 409
+        assert client.get(quote + '/pdf').content == pdf
         assert client.get(rfq20 + '/workbook').status_code == 200
         assert decide(1, 4, specification='M10 x 55 A2-70').status_code == 303
         assert 'Recipient approval required' in client.get(line10).text
