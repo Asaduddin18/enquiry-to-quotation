@@ -13,6 +13,7 @@ from .intake import parse_email, read_pdf
 from .store import connect, initialize
 from .suppliers import supplier_router
 from .rfq import router as rfq_router
+from .offers import router as offers_router
 from .requirements_review import review_router, review_controls
 
 MAX_EMAIL = 10 * 1024 * 1024
@@ -29,6 +30,7 @@ app.state.extract = deepseek
 app.include_router(review_router)
 app.include_router(supplier_router)
 app.include_router(rfq_router)
+app.include_router(offers_router)
 
 
 def load(enquiry_id):
