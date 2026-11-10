@@ -103,7 +103,14 @@ def test_held_out_workflow(case, monkeypatch):
             assert response.status_code == expected, response.text
             return response
 
-        enquiry = upload('/enquiries/import', customer_email(case)).headers['location']
+        capture_dir = os.getenv('PORTFOLIO_CAPTURE_DIR') if case['id'] == 'dosing-skid' else None
+        capture = Path(capture_dir) if capture_dir else None
+        incoming = customer_email(case)
+        if capture:
+            capture.mkdir(parents=True, exist_ok=True)
+            (capture / 'customer-enquiry.eml').write_bytes(incoming)
+            (capture / 'customer-requirement.pdf').write_bytes(read_pdf(incoming)[0])
+        enquiry = upload('/enquiries/import', incoming).headers['location']
         line_id = enquiry.rsplit('/', 1)[-1] + '-1'
         line = f'{enquiry}/lines/{line_id}'
         post(line + '/review', dict(version=0, decision='confirmed', description=case['spec'],
@@ -117,17 +124,37 @@ def test_held_out_workflow(case, monkeypatch):
         workbook = client.get(rfq + '/workbook').content
         reference = field(client.get(rfq).text, 'reference')
         post(rfq + '/approve', dict(reference=reference, reviewed='true'))
-        assert case['reference'] not in client.get(rfq + '/email').text
+        rfq_mail = client.get(rfq + '/email')
+        assert rfq_mail.status_code == 200 and case['reference'] not in rfq_mail.text
+        if capture:
+            (capture / 'approved-rfq.eml').write_bytes(rfq_mail.content)
+        if case['id'] == 'dosing-skid':
+            history = [
+                dict(id=f'phase8-dosing-{index}', description=case['spec'], kind='purchase',
+                     spec='HEX_BOLT|8|35|A2-70', verified=True, date='2026-09-01',
+                     pieces=120, price=price, pack=1, basis='delivered_omr_ex_vat')
+                for index, price in enumerate(('0.230', '0.250', '0.260'), 1)
+            ]
+            assert client.post('/history/import', json=history).status_code == 200
         offers = line + '/offers'
         quotes = enquiry + '/quotes'
         approved = None
         for index, offer in enumerate(case['offers']):
-            upload('/supplier-replies', supplier_reply(workbook, offer, reference, index))
+            reply = supplier_reply(workbook, offer, reference, index)
+            upload('/supplier-replies', reply)
+            if capture:
+                (capture / f'supplier-reply-{index + 1}.eml').write_bytes(reply)
             page = client.get(offers).text
             if 'blocker' in offer:
                 assert offer['blocker'] in page and 'Line blocked' in page
                 continue
             assert f'OMR {offer["total"]} total' in page
+            if case['id'] == 'dosing-skid':
+                assert 'Median OMR 0.250/piece' in page
+                assert 'legacy:phase8-dosing-2' in page
+                if index == 0:
+                    assert '+40.00%' in page and 'Price check advised' in page
+                print(f'Dosing skid reply {index + 1}: OMR {offer["total"]} total; historical median OMR 0.250/piece.')
             if case.get('expect_stale_release') and index == 0:
                 post(offers, dict(token=field(page, 'token'), reply_id=field(page, 'reply_id')))
                 approved = post(quotes, dict(token=field(client.get(quotes).text, 'token'),
@@ -142,9 +169,19 @@ def test_held_out_workflow(case, monkeypatch):
         post(offers, dict(token=field(page, 'token'), reply_id=recommended))
         if approved:
             assert client.get(approved + '/email').status_code == 409
+            print('Revised MOQ: release of the previously approved quotation blocked (409).')
         quote = post(quotes, dict(token=field(client.get(quotes).text, 'token'),
                                   lines=line_id)).headers['location']
         post(quote + '/approve', dict(reviewed='true'))
+        if case['id'] == 'pump-base':
+            class ExpiredClock(datetime):
+                @classmethod
+                def now(cls, tz=None):
+                    return (NOW + timedelta(days=3)).astimezone(tz)
+
+            with monkeypatch.context() as clock:
+                clock.setattr(quoting, 'datetime', ExpiredClock)
+                assert client.get(quote + '/email').status_code == 409
         draft = client.get(quote + '/email')
         assert draft.status_code == 200
         mail = BytesParser(policy=policy.default).parsebytes(draft.content)
@@ -154,6 +191,15 @@ def test_held_out_workflow(case, monkeypatch):
         assert f'Total OMR {case["quote_total"]}' in text
         assert reference not in text
         post(quote + '/issue', dict(sent='true'))
+        if case['id'] == 'dosing-skid':
+            post(quote + '/purchase', dict(line_id=line_id, reference='DEMO-PO-318',
+                                          cost='30.000', pieces=120, purchased_on='2026-11-10'))
+            assert 'DEMO-PO-318' in client.get(offers).text
+            print(f'Approved PDF matched the EML attachment: OMR {case["quote_total"]}. '
+                  'Manual issuance and separate purchase evidence recorded.')
+        if capture:
+            (capture / 'approved-quotation.pdf').write_bytes(pdf)
+            (capture / 'approved-quotation.eml').write_bytes(draft.content)
 
 
 @pytest.mark.parametrize('case', CASES, ids=lambda case: case['id'])

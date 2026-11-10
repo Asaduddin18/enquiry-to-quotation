@@ -87,7 +87,9 @@
 
 [Historical benchmark implementation template](phase-4/historical-benchmark-template.md)
 
-## Phase 8 — Package the portfolio case study
+## Phase 8 — Package the portfolio case study (complete)
+
+[Case study and recorded walkthrough](phase-8/case-study.md) · [Final verification](phase-8/implementation-and-learning.md)
 
 - Write a short case study covering the trader's problem, the buyer's decisions, the scope, and the evaluation results.
 - Record a walkthrough from the original enquiry to the approved quote. Include one consequential exception and show how it changed the recommendation or quote.
