@@ -1,0 +1,33 @@
+{
+  "name": "Import reviewed legacy purchase history",
+  "nodes": [
+    {
+      "id": "6d0ebcb7-0937-4337-ae12-9892aef26941",
+      "name": "Receive records",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [0, 0],
+      "parameters": {"inputSource": "passthrough"}
+    },
+    {
+      "id": "82364a2a-c32f-4e49-a045-814af787fa4d",
+      "name": "Validate and upsert in app",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [260, 0],
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8000/history/import",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.records) }}",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Receive records": {"main": [[{"node": "Validate and upsert in app", "type": "main", "index": 0}]]}
+  },
+  "settings": {"executionOrder": "v1"},
+  "active": false
+}

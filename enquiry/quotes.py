@@ -248,7 +248,7 @@ def review_quote(enquiry_id: int, revision: int):
           f'<option value="{escape(item["source"]["line"]["id"], quote=True)}">{escape(str(item["source"]["line"]["line_number"]))}</option>'
           for item in snapshot["items"])}</select></label>
         <label>Purchase evidence reference <input name="reference" required></label>
-        <label>Actual delivered cost OMR <input name="cost" required></label>
+        <label>Actual delivered cost OMR excluding VAT <input name="cost" required></label>
         <label>Actual pieces bought <input name="pieces" type="number" min="1" required></label>
         <label>Purchase date <input name="purchased_on" type="date" required></label>
         <button>Record confirmed purchase</button></form>'''

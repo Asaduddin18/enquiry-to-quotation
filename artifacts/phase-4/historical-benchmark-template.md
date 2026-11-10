@@ -1,6 +1,6 @@
 # Historical benchmark template
 
-**Status.** Scheduled for [Phase 7](../phase-wise-plan.md#phase-7--check-historical-item-prices). The live comparison reports that the historical benchmark is pending.
+**Status.** Scheduled for [Phase 7](../phase-wise-plan.md#phase-7--check-historical-item-prices). See the [implementation and evaluation](../phase-7/implementation-and-learning.md) for the shipped scope.
 
 - **Input:** confirmed requirement version, family, dimensions, grade, mandatory standard or brand, requested quantity, current delivered OMR per piece, and evaluation date.
 - **History record:** stable source ID, record type, original description, verified specs, purchase date, quantity, unit, pack size, OMR cost basis, and source reference.

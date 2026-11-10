@@ -15,6 +15,7 @@ from .suppliers import supplier_router
 from .rfq import router as rfq_router
 from .offers import router as offers_router
 from .quotes import router as quote_router
+from .history import router as history_router
 from .requirements_review import review_router, review_controls
 
 MAX_EMAIL = 10 * 1024 * 1024
@@ -33,6 +34,7 @@ app.include_router(supplier_router)
 app.include_router(rfq_router)
 app.include_router(offers_router)
 app.include_router(quote_router)
+app.include_router(history_router)
 
 
 def load(enquiry_id):
