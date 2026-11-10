@@ -159,6 +159,10 @@ def test_confirm_and_apply_line_revision(monkeypatch):
         assert client.post(quote + '/purchase', data=purchase).status_code == 303
         assert client.post(quote + '/purchase', data=purchase).status_code == 303
         assert client.post(quote + '/purchase', data=purchase | {'cost': '212'}).status_code == 409
+        history_key = f'purchase:{parent_id}:{parent_id}-1:PO-42'
+        assert history_key in client.get(offers).text
+        evidence = client.get('/history/evidence', params={'source_id': history_key})
+        assert evidence.json()['pieces'] == 501
         draft = client.post(quotes, data=quote_form).headers['location']
         assert client.post(draft + '/approve', data=approval).status_code == 303
         assert client.post(rfq20).status_code == 303

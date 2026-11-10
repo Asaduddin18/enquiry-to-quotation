@@ -112,3 +112,9 @@ def initialize():
                 FOREIGN KEY (enquiry_id, revision) REFERENCES customer_quote(enquiry_id, revision)
             )
         """)
+        db.execute("""
+            CREATE TABLE IF NOT EXISTS historical_price (
+                source_id text PRIMARY KEY,
+                record jsonb NOT NULL
+            )
+        """)

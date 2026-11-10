@@ -4,6 +4,9 @@ from email import policy
 from email.parser import BytesParser
 from email.utils import parseaddr
 from html import escape
+from urllib.parse import urlencode
+
+from .history import for_offer
 from io import BytesIO
 import re
 from xml.etree.ElementTree import ParseError
@@ -264,10 +267,9 @@ def handoff(enquiry_id: int, line_id: str):
 def offers_page(enquiry_id: int, line_id: str):
     url = f'/enquiries/{enquiry_id}/lines/{line_id}/offers'
     with connect() as db:
-        _, package, rows, offers, ranked, token = comparison(db, enquiry_id, line_id, datetime.now(GST))
+        line, package, rows, offers, ranked, token = comparison(db, enquiry_id, line_id, datetime.now(GST))
     content = [f'<h1>Offers for {package["reference"]}</h1><a href="/supplier-replies">Import or inspect replies</a>',
-               f'<p>{f"Recommended reply: {ranked[0]} (lowest eligible total spend)" if ranked else "Line blocked. No eligible offers."}</p>',
-               '<p>Historical benchmark is deferred.</p>']
+               f'<p>{f"Recommended reply: {ranked[0]} (lowest eligible total spend)" if ranked else "Line blocked. No eligible offers."}</p>']
     for row in rows:
         key = row['id']
         result = offers.get(key)
@@ -279,6 +281,26 @@ def offers_page(enquiry_id: int, line_id: str):
         for label, cell in (row['terms'] or {}).items():
             content.append(f'<div>{escape(label)} ({escape(cell["cell"])}): {escape(cell["value"])}</div>')
         if result:
+            history = for_offer(line, result['purchase_quantity'], result['unit_price'], datetime.now(GST).date())
+            content.append(f'<p>Historical benchmark: {escape(history["status"])}</p>')
+            if 'median' in history:
+                content.append(
+                    f'<p>Current OMR {result["unit_price"]:.3f}/piece at {result["purchase_quantity"]} pieces. '
+                    f'Median OMR {history["median"]:.3f}/piece · {history["difference"]:+.2f}% '
+                    f'{"· Price check advised" if history["flag"] else ""}</p>'
+                )
+            if 'included' in history:
+                content.append(
+                    f'<p>{len(history["included"])} comparable purchases · {history["months"]} months · '
+                    f'{history["lower"]}× to {history["upper"]}× purchase quantity</p><ul>'
+                )
+                for purchase in history['included']:
+                    query = urlencode({'source_id': purchase['id']})
+                    content.append(f'<li><a href="/history/evidence?{escape(query)}">{escape(purchase["id"])}</a>'
+                                   f' · {purchase["date"]} · {purchase["pieces"]} pieces · OMR {purchase["unit_price"]:.3f}/piece</li>')
+                for excluded in history['excluded']:
+                    content.append(f'<li>{escape(excluded["id"])} excluded · {escape(excluded["reason"])}</li>')
+                content.append('</ul>')
             content.append(f'<form method="post" action="{url}"><input type="hidden" name="token" value="{token}">'
                            f'<input type="hidden" name="reply_id" value="{key}"><input name="reason" placeholder="Override reason">'
                            '<button>Select offer</button></form>')

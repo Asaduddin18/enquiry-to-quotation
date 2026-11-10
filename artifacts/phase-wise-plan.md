@@ -71,7 +71,9 @@
 
 **Done when:** We can show the results and case counts, explain why staff review was needed, and identify any remaining limitations.
 
-## Phase 7 — Check historical item prices
+## Phase 7 — Check historical item prices (implemented)
+
+[Evaluation and learning report](phase-7/implementation-and-learning.md)
 
 **Business outcome.** Before quoting, the buyer can see how a current supplier price compares with what the trader previously paid for the same specification, with links to the supporting records.
 
