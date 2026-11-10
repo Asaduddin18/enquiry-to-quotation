@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A synthetic trading-company replay from customer enquiry to an evidence-backed quotation.">
+<title>Enquiry to Quotation | Portfolio demo</title>
+<style>
+:root{color-scheme:light;--paper:#f5f4ee;--ink:#162c26;--muted:#466057;--green:#205847;--line:#cdd6cc;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 system-ui,sans-serif}a{color:var(--green);text-underline-offset:4px}main,header,footer{max-width:1040px;margin:auto;padding:24px clamp(20px,5vw,60px)}header{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line)}.eyebrow{color:var(--green);font-weight:700;letter-spacing:.11em;text-transform:uppercase;font-size:.75rem}h1{font:700 clamp(2.8rem,8vw,5.5rem)/.95 Georgia,serif;letter-spacing:-.045em;margin:20px 0}h2{font:700 clamp(1.8rem,4vw,2.65rem)/1.15 Georgia,serif;margin:0 0 12px}p{max-width:66ch}.intro{font-size:1.17rem;color:var(--muted)}.hero{padding:45px 0 35px}.actions{display:flex;flex-wrap:wrap;gap:14px;align-items:center}.button{display:inline-block;padding:.55rem .85rem;border:1px solid var(--green);border-radius:5px;background:var(--green);color:white;text-decoration:none}.button.secondary{background:transparent;color:var(--green)}section{border-top:1px solid var(--line);padding:30px 0}details{border-bottom:1px solid var(--line);padding:11px 0}summary{cursor:pointer;font-weight:700}details p{margin:.5rem 0 0}.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;margin:12px 0}th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}th{background:#e6ede4}.caption,footer{color:var(--muted)}video{width:100%;max-width:820px;display:block;background:var(--ink);margin-top:16px;border-radius:6px}footer{border-top:1px solid var(--line)}code{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<header><strong>Wadi Link Trading · Portfolio case</strong><a href="https://github.com/Asaduddin18/enquiry-to-quotation">View source on GitHub</a></header>
+<main>
+<div class="hero">
+<div class="eyebrow">Procurement automation · Synthetic demo</div>
+<h1>Enquiry to Quotation</h1>
+<p class="intro">Follow a buyer from a customer’s requirement email to a quotation backed by approved supplier terms. One revised minimum order changes the purchase decision and invalidates the earlier quote.</p>
+<div class="actions"><a class="button" href="#replay">Explore the replay</a><a class="button secondary" href="https://github.com/Asaduddin18/enquiry-to-quotation/blob/main/artifacts/phase-8/case-study.md">Read the case study</a></div>
+</div>
+<section id="replay">
+<div class="eyebrow">The dosing-skid case</div>
+<h2>120 bolts. Two suppliers. One revision.</h2>
+<details open><summary>01 · Confirm the customer requirement</summary><p>The buyer reviews the saved email and PDF and confirms 120 M8 × 35 A2-70 hex bolts.</p></details>
+<details><summary>02 · Prepare the supplier RFQ</summary><p>The buyer approves recipients and releases a draft email with a prefilled Excel reply form. The RFQ reference links subsequent replies.</p></details>
+<details><summary>03 · Compare cost and historical evidence</summary><p>Supplier A costs OMR 42.000. Supplier B has a cheaper unit price but initially costs OMR 50.000 because of its minimum. Three comparable past purchases put A’s unit price 40% above the OMR 0.250 median.</p></details>
+<details><summary>04 · Recheck the quote after the supplier revision</summary><p>B reduces its minimum to 120 pieces, dropping total cost to OMR 30.000. The buyer selects B. The previous approved quote is blocked from release and the buyer prepares a new version.</p></details>
+<details><summary>05 · Approve and record issuance</summary><p>The new quote is OMR 37.560 excluding VAT. The downloaded email contains the exact reviewed PDF. Staff record manual issuance and a confirmed purchase separately.</p></details>
+<div class="scroll"><table>
+<caption class="caption">Supplier comparison in the recorded replay</caption>
+<thead><tr><th>Offer</th><th>OMR per piece</th><th>Pieces to buy</th><th>Delivered OMR</th></tr></thead>
+<tbody><tr><td>A</td><td>0.350</td><td>120</td><td>42.000</td></tr><tr><td>B, original</td><td>0.250</td><td>200</td><td>50.000</td></tr><tr><td>B, revised</td><td>0.250</td><td>120</td><td><strong>30.000</strong></td></tr></tbody>
+</table></div>
+<video controls playsinline preload="none" poster="demo-preview.png" src="https://raw.githubusercontent.com/Asaduddin18/enquiry-to-quotation/main/artifacts/phase-8/demo/walkthrough.mp4" aria-label="45-second captioned workflow recap"></video>
+<p><a href="https://github.com/Asaduddin18/enquiry-to-quotation/blob/main/artifacts/phase-8/demo/approved-quotation.pdf">Inspect the generated quote PDF</a></p>
+</section>
+<section><div class="eyebrow">Verified scope</div><h2>What the demo proves</h2>
+<p>17 tests passed against PostgreSQL with pgvector. The deterministic replay verified offer comparison, stale release protection, and the exact PDF attachment. In a separate live DeepSeek rerun, one of three enquiries cleared the full extraction and evidence checks. The workflow includes buyer review.</p>
+<p class="caption">This is a static portfolio replay with fictional data. The local backend uses saved email files and manual sending. Live Gmail delivery, n8n execution and production approval permissions remain unverified.</p>
+<p><a href="https://github.com/Asaduddin18/enquiry-to-quotation/blob/main/artifacts/phase-8/implementation-and-learning.md">Read the verification report</a></p></section>
+</main>
+<footer>Self-directed portfolio project · Oman scenario · OMR pricing</footer>
+</body>
+</html>
