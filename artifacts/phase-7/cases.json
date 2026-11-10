@@ -1,0 +1,152 @@
+[
+  {
+    "id": "above",
+    "split": "development",
+    "description": "M10 \u00d7 50 A2-70 stainless hex bolt",
+    "spec": "HEX_BOLT|10|50|A2-70",
+    "price": "0.420",
+    "pieces": 500,
+    "gold": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "flag": true
+  },
+  {
+    "id": "threshold",
+    "split": "development",
+    "description": "M10 \u00d7 50 A2-70 stainless hex bolt",
+    "spec": "HEX_BOLT|10|50|A2-70",
+    "price": "0.400",
+    "pieces": 500,
+    "gold": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "flag": false
+  },
+  {
+    "id": "below",
+    "split": "development",
+    "description": "M10 \u00d7 50 A2-70 stainless hex bolt",
+    "spec": "HEX_BOLT|10|50|A2-70",
+    "price": "0.230",
+    "pieces": 500,
+    "gold": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "flag": true
+  },
+  {
+    "id": "ordinary",
+    "split": "development",
+    "description": "M10 \u00d7 50 A2-70 stainless hex bolt",
+    "spec": "HEX_BOLT|10|50|A2-70",
+    "price": "0.325",
+    "pieces": 500,
+    "gold": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "flag": false
+  },
+  {
+    "id": "revised-length",
+    "split": "held-out",
+    "description": "M10 \u00d7 55 A2-70 stainless hex bolt",
+    "spec": "HEX_BOLT|10|55|A2-70",
+    "price": "0.420",
+    "pieces": 500,
+    "gold": [
+      "wrong-length"
+    ],
+    "flag": false
+  },
+  {
+    "id": "absent",
+    "split": "held-out",
+    "description": "M10 \u00d7 56 A2-70 stainless hex bolt",
+    "spec": "HEX_BOLT|10|56|A2-70",
+    "price": "0.420",
+    "pieces": 500,
+    "gold": [],
+    "flag": false
+  },
+  {
+    "id": "moq-double",
+    "split": "held-out",
+    "description": "M10 \u00d7 50 A2-70 stainless hex bolt",
+    "spec": "HEX_BOLT|10|50|A2-70",
+    "price": "0.420",
+    "pieces": 1000,
+    "gold": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "flag": true
+  },
+  {
+    "id": "moq-outside",
+    "split": "held-out",
+    "description": "M10 \u00d7 50 A2-70 stainless hex bolt",
+    "spec": "HEX_BOLT|10|50|A2-70",
+    "price": "0.420",
+    "pieces": 1001,
+    "gold": [],
+    "flag": false
+  },
+  {
+    "id": "quantity-lower",
+    "split": "held-out",
+    "description": "M10 \u00d7 50 A2-70 stainless hex bolt",
+    "spec": "HEX_BOLT|10|50|A2-70",
+    "price": "0.420",
+    "pieces": 250,
+    "gold": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "flag": true
+  },
+  {
+    "id": "quantity-outside",
+    "split": "held-out",
+    "description": "M10 \u00d7 50 A2-70 stainless hex bolt",
+    "spec": "HEX_BOLT|10|50|A2-70",
+    "price": "0.420",
+    "pieces": 249,
+    "gold": [],
+    "flag": false
+  },
+  {
+    "id": "sparse-sixty",
+    "split": "held-out",
+    "description": "M10 \u00d7 60 A2-70 stainless hex bolt",
+    "spec": "HEX_BOLT|10|60|A2-70",
+    "price": "0.420",
+    "pieces": 500,
+    "gold": [
+      "P-60"
+    ],
+    "flag": false
+  },
+  {
+    "id": "sparse-sixty-five",
+    "split": "held-out",
+    "description": "M10 \u00d7 65 A2-70 stainless hex bolt",
+    "spec": "HEX_BOLT|10|65|A2-70",
+    "price": "0.420",
+    "pieces": 500,
+    "gold": [
+      "P-65"
+    ],
+    "flag": false
+  }
+]

@@ -1,0 +1,4 @@
+development literal: 4/12 gold IDs at budget 25
+development structured: 12/12 gold IDs at budget 25
+held-out literal: 2/9 gold IDs at budget 25
+held-out structured: 9/9 gold IDs at budget 25
