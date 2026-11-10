@@ -45,21 +45,5 @@ set +a
 
 Open http://127.0.0.1:8000 and upload the shutdown case's `01-customer-enquiry.eml`. Use `.venv/bin/python -m pytest` for the tests. Set `DATABASE_URL` to a disposable database to include PostgreSQL integration tests. Enable pgvector in that database to exercise vector retrieval.
 
-- [Phase 3 implementation plan](artifacts/phase-3-implementation-plan.md)
-- [Phase 3.1 implementation and learning report](artifacts/phase-3-1-implementation-and-learning.md)
-
-[Phase 3.2 implementation and learning report](artifacts/phase-3-2-implementation-and-learning.md)
-
-[Phase 3.3 implementation and learning report](artifacts/phase-3-3-implementation-and-learning.md)
-
-[Phase 3.4 implementation and learning report](artifacts/phase-3-4-implementation-and-learning.md)
-
-[Phase 4 implementation and learning report](artifacts/phase-4/implementation-and-learning.md)
-
-[Phase 5 implementation and learning report](artifacts/phase-5/implementation-and-learning.md)
-
-[Phase 6 evaluation and learning report](artifacts/phase-6/implementation-and-learning.md)
-
-[Phase 7 historical pricing evaluation and learning report](artifacts/phase-7/implementation-and-learning.md)
 
 Built by [Asaduddin18](https://github.com/Asaduddin18). Public for portfolio inspection. No open-source license has been selected.
