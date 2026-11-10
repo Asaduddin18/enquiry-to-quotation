@@ -45,7 +45,7 @@
 - Match supplier descriptions to requested items even when the wording differs. Send uncertain matches and critical spec conflicts to the buyer for review.
 - Compare each offer in OMR per requested unit. Show the original delivered price and the pack conversion.
 - Show minimum order quantity, actual purchase spend, lead time, validity, brand, and origin alongside price. Flag missing or expired terms that prevent a decision.
-- Compare prices against relevant history on the same cost basis. Flag unusual prices and substitute brands with the evidence the buyer needs to judge them.
+- Flag substitute brands with the evidence the buyer needs to judge them. Historical price comparison is scheduled for Phase 7.
 - Recommend a supplier per line and explain why. Make it clear when an apparently cheaper offer misses a requirement or costs more because of minimum quantities. Mark lines with no acceptable offer as blocked.
 
 **Done when:** The buyer can explain why each recommendation is usable, review any exception, and identify the lines still preventing a complete quote.
@@ -60,7 +60,9 @@
 
 **Done when:** Staff can approve a complete or clearly marked partial quote, and a later enquiry can distinguish a historical offer from a price actually paid.
 
-## Phase 6 — Evaluate the full business workflow
+## Phase 6 — Evaluate the full business workflow (initial evaluation run)
+
+[Evaluation results and learning report](phase-6/implementation-and-learning.md)
 
 - Run the workflow on the held-out cases using their original synthetic documents. Check results against the answer key.
 - Include a straightforward case and cases where a near-match has the wrong spec, an apparently cheap offer becomes costly after normalisation, or a revised reply changes the supplier choice.
@@ -69,7 +71,21 @@
 
 **Done when:** We can show the results and case counts, explain why staff review was needed, and identify any remaining limitations.
 
-## Phase 7 — Package the portfolio case study
+## Phase 7 — Check historical item prices
+
+**Business outcome.** Before quoting, the buyer can see how a current supplier price compares with what the trader previously paid for the same specification, with links to the supporting records.
+
+- Import historical purchase and quotation records. Keep confirmed purchases, supplier offers, and issued customer quotes distinct. Only confirmed purchases feed the initial cost benchmark.
+- Find relevant historical items by description similarity and structured lookup. Verify critical specs such as grade and dimensions before including a match.
+- Compare delivered OMR per piece on the same basis, using configurable recency and quantity windows. Show the median and its supporting purchases when at least three qualify. Flag a difference greater than 25% above or below the median.
+- Distinguish insufficient comparable purchases from a history lookup failure. Keep live offer comparison available in either case.
+- Extend Phase 6's evaluation with the historical cases. Confirm that three comparable M10 × 50 purchases yield an OMR 0.320 median and flag OMR 0.420 as 31.25% above it. Verify those purchases contribute zero observations after the requirement changes to M10 × 55.
+
+**Done when:** A buyer can open a benchmark, verify the source purchases and calculation, and understand why a similar item was excluded.
+
+[Historical benchmark implementation template](phase-4/historical-benchmark-template.md)
+
+## Phase 8 — Package the portfolio case study
 
 - Write a short case study covering the trader's problem, the buyer's decisions, the scope, and the evaluation results.
 - Record a walkthrough from the original enquiry to the approved quote. Include one consequential exception and show how it changed the recommendation or quote.
@@ -80,4 +96,4 @@
 
 ## Project completion
 
-The project is portfolio-ready when all seven phases are complete and the synthetic documents, working workflow, evaluation results, and published case study describe the same end-to-end outcome.
+The project is portfolio-ready when all eight phases are complete and the synthetic documents, working workflow, evaluation results, and published case study describe the same end-to-end outcome.
