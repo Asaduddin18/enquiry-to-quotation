@@ -1,0 +1,45 @@
+[
+  {
+    "id": "pump-base",
+    "reference": "PMP-642",
+    "subject": "Pump skid anchors | PMP-642",
+    "body": "Hi Purchasing, please price the attached requirement by 15:30 today. The pump base goes in on Thursday.",
+    "line": "12",
+    "spec": "M16 x 75 class 10.9 hex head bolt",
+    "quantity": 60,
+    "offers": [
+      {"supplier": "C", "spec": "M16 x 70 class 10.9 hex bolt", "price": "0.300", "basis": "EA", "pack": 1, "minimum": 60, "valid": "12 Nov 2026 16:00 GST", "blocker": "Offered specification differs"},
+      {"supplier": "C", "spec": "M16 x 75 class 10.9 hex bolt", "price": "0.800", "basis": "EA", "pack": 1, "minimum": 60, "valid": "12 Nov 2026 16:00 GST", "total": "48.000"}
+    ],
+    "quote_total": "60.000"
+  },
+  {
+    "id": "dosing-skid",
+    "reference": "DOS-318",
+    "subject": "Dosing skid fasteners | DOS-318",
+    "body": "Please return your quotation by 15:30 today. This is for a complete line and we need the quantity on the attached order sheet.",
+    "line": "7",
+    "spec": "M8 x 35 A2-70 stainless hex head bolt",
+    "quantity": 120,
+    "offers": [
+      {"supplier": "A", "spec": "M8 x 35 A2-70 stainless hex bolt", "price": "0.350", "basis": "EA", "pack": 1, "minimum": 120, "valid": "12 Nov 2026 16:00 GST", "total": "42.000"},
+      {"supplier": "B", "spec": "M8 x 35 A2-70 stainless hex bolt", "price": "2.500", "basis": "BOX", "pack": 10, "minimum": 20, "valid": "12 Nov 2026 16:00 GST", "total": "50.000"},
+      {"supplier": "B", "spec": "M8 x 35 A2-70 stainless hex bolt", "price": "2.500", "basis": "BOX", "pack": 10, "minimum": 12, "valid": "12 Nov 2026 16:00 GST", "total": "30.000"}
+    ],
+    "quote_total": "37.560",
+    "expect_stale_release": true
+  },
+  {
+    "id": "guard-rail",
+    "reference": "GRD-907",
+    "subject": "Guard rail repairs | GRD-907",
+    "body": "Can you get a firm quote back by 15:30 today? Please see the site delivery requirement attached.",
+    "line": "4",
+    "spec": "M14 x 65 class 10.9 hex head bolt",
+    "quantity": 80,
+    "offers": [
+      {"supplier": "C", "spec": "M14 x 65 class 10.9 hex bolt", "price": "0.650", "basis": "EA", "pack": 1, "minimum": 80, "valid": "10 Nov 2026 09:00 GST", "blocker": "Offer expired"}
+    ],
+    "quote_total": null
+  }
+]

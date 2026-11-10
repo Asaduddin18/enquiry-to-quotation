@@ -60,7 +60,9 @@
 
 **Done when:** Staff can approve a complete or clearly marked partial quote, and a later enquiry can distinguish a historical offer from a price actually paid.
 
-## Phase 6 — Evaluate the full business workflow
+## Phase 6 — Evaluate the full business workflow (initial evaluation run)
+
+[Evaluation results and learning report](phase-6/implementation-and-learning.md)
 
 - Run the workflow on the held-out cases using their original synthetic documents. Check results against the answer key.
 - Include a straightforward case and cases where a near-match has the wrong spec, an apparently cheap offer becomes costly after normalisation, or a revised reply changes the supplier choice.

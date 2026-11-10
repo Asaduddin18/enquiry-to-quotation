@@ -51,3 +51,5 @@ Open http://127.0.0.1:8000 and upload the shutdown case's `01-customer-enquiry.e
 [Phase 4 implementation and learning report](artifacts/phase-4/implementation-and-learning.md)
 
 [Phase 5 implementation and learning report](artifacts/phase-5/implementation-and-learning.md)
+
+[Phase 6 evaluation and learning report](artifacts/phase-6/implementation-and-learning.md)
